@@ -2,8 +2,7 @@ import pygame
 import random
 
 #start pygame
-pygame.init
-
+pygame.init()
 #Create screen
 screen=pygame.display.set_mode((800,600))
 pygame.display.set_caption("Rock Paper Scissors")
@@ -35,13 +34,79 @@ class Button:
     def clicked(self,pos):
        return self.rect.collidepoint(pos)
        
-    rock_button=Button("Rock",50,450,200,100)
-    paper_button=Button("Paper",300,450,200,100)
-    scissors_button=Button("Scissor",550,450,200,100)
+rock_button=Button("Rock",50,450,200,100)
+paper_button=Button("Paper",300,450,200,100)
+scissors_button=Button("Scissor",550,450,200,100)
 
     #Game loop
-    running=True
+running=True
 
-    player_choice=" "
-    computer_choice=" "
-    result=" "
+player_choice=" "
+computer_choice=" "
+result=" "
+
+while running:
+   screen.fill((100,150,200))
+   rock_button.draw()
+   paper_button.draw()
+   scissors_button.draw()
+
+   #show text
+   player_text=font.render(f"Player:{player_choice}",True,WHITE)
+   computer_text=font.render(f"computer:{computer_choice}",True,WHITE)
+   score_text=font.render(f"{player_score}:{computer_score}",True,WHITE)
+   result_text=font.render(result,True,WHITE)
+
+   screen.blit(player_text,(50,50))
+   screen.blit(computer_text,(50,120))
+   screen.blit(score_text,(350,250))
+   screen.blit(result_text,(250,350))
+   
+   #events
+   for event in pygame.event.get():
+      if event.type==pygame.QUIT:
+         running=False
+      
+      if event.type==pygame.MOUSEBUTTONDOWN:
+         mouse_pos=pygame.mouse.get_pos()
+
+         #player choice
+         if rock_button.clicked(mouse_pos):
+            player_choice="rock"
+
+         elif paper_button.clicked(mouse_pos):
+            player_choice="paper"
+         elif scissors_button.clicked(mouse_pos):
+            player_choice="scissors"
+         
+         #computer choice
+         if player_choice!="":
+            computer_choice=random.choice(choices)
+
+         #decide winner
+         if player_choice==computer_choice:
+            result="DRAW!"
+
+         elif((player_choice=="rock" and computer_choice=="scissors")or
+              (player_choice=="paper" and computer_choice=="rock")or
+              (player_choice=="scisssors" and computer_choice=="paper")
+
+         ):
+            result="You win!"
+            player_score=player_score+1
+         else:
+            result="Computer wins!"
+            computer_score=computer_score+1
+   
+   pygame.display.update()
+pygame.quit()
+
+
+
+
+
+
+
+
+
+
